@@ -13,6 +13,10 @@ const userName = (msg) => {
   showMessage(msg, "user");
 };
 
+const userBot =(msg) => {
+  showMessage(msg, "bot");
+};
+
 // Declare your functions after this comment
 
 // This function will add a chat bubble in the correct place based on who the sender is
@@ -43,19 +47,17 @@ const showMessage = (message, sender) => {
 };
 
 const nextQuestion = (event) => {
-  event.preventDefault();
+  // event.preventDefault();
   questionNr++;
-  // console.log("our currentQuestion variable is:", questionNr);
   if (questionNr === 1) {
     handelNameQuestion();
-    setTimeout(coffeeQuestion, 1500);
+    setTimeout(coffeeQuestion, 1000);
   } else if (questionNr === 2) {
     handelNameQuestion();
     setTimeout(question2, 1000);
-  } else if (questionNr === 3) {
-    handelNameQuestion();
-    setTimeout(coffeeQuestion, 1000);
-  }
+  } else if (questionNr === 3 )
+  handelNameQuestion()
+  setTimeout(ShowCoffee, 1000)
 };
 
 // Starts here
@@ -65,40 +67,41 @@ const greeting = () => {
   // Just to check it out, change 'bot' to 'user' here 👆
 };
 
-const coffeeQuestion = (name) => {
-  showMessage(`Welcome ${name} do you like to order a coffee?`, "bot");
+const coffeeQuestion = (msg) => {
+  showMessage(`Welcome ${msg} do you like to order a coffee?`, "bot");
   input.value = "";
 };
 
-const question2 = () => {
+const question2 = (event) => {
   showMessage(`Nice. what kid of coffee do you like yo have? `, "bot");
 
   inputWrapper.innerHTML = `
  
- <button id="lBtn">LATTE</button>
- <button id="fBtn"> FRAPPE</button>
- <button id="eBtn">ESPRESSO</button>
+ <button id="latteButton">LATTE</button>
+ <button id="frappeButton"> FRAPPE</button>
+ <button id="espressoButton">ESPRESSO</button>
  `;
   document
-    .getElementById("lBtn")
-    .addEventListener("click", () => ShowCoffee("Latte"));
+    .getElementById("latteButton")
+    .addEventListener("click", () => nextQuestion("Latte"));
   document
-    .getElementById("fBtn")
-    .addEventListener("click", () => ShowCoffee("Frappe"));
+    .getElementById("frappeButton")
+    .addEventListener("click", () => nextQuestion("Frappe"));
   document
-    .getElementById("eBtn")
-    .addEventListener("click", () => ShowCoffee("Espresso"));
+    .getElementById("espressoButton")
+    .addEventListener("click", () => nextQuestion("Espresso"));
 };
 
 const ShowCoffee = (type) => {
-  // questionNr++;
+  questionNr++;
   if (type === "Latte") {
-    showMessage(`One Latte is coming up! `,"bot");
+    showMessage("One Latte is coming up! ");
   } else if (type === "Frappe") {
-    showMessage(`one Frappe is coming up!`,"bot");
-  } else type === "Espresso";
-  showMessage(`one Frappe is coming up! `, "bot");
+    showMessage("one Frappe is coming up! ");
+  } else (type === "Espresso")
+  showMessage("one Frappe is coming up! ");
 };
+
 
 const handelNameQuestion = () => {
   const name = input.value;
@@ -106,16 +109,11 @@ const handelNameQuestion = () => {
   input.value = "";
 };
 
-// const ShowCoffee = () => {
-//   if (latteButton) {
-//     showMessage("one Latte is coming up! ");
-//   } else if (frappeButton) {
-//     showMessage("one Frappe is coming up! ");
-//   } else espressoButton;
-//   showMessage("one Frappe is coming up! ");
-// };
 // Set up your eventlisteners here
-form.addEventListener("submit", nextQuestion);
+form.addEventListener("submit", nextQuestion(input.value));
+input.addEventListener("keypress", (event) => {
+  if (event.key === "Enter" && input.value) nextQuestion(input.value);
+});
 
 // When website loaded, chatbot asks first question.
 // normally we would invoke a function like this:
